@@ -1,0 +1,14 @@
+[project]
+name = "www-almoxarifado-com"
+version = "0.1.0"
+description = "Um site fundamentado em Django para gerenciar um almoxarifado, ou seja, estoque."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "django>=5.2.8",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.4",
+]
