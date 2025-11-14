@@ -1,27 +1,40 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.http import Http404
 
 from .models import ItemCategory, Item
 
 
 def index(request):
-    categories_list = ItemCategory.objects.order_by("-name")
-    items_list = Item.objects.order_by("-category")
-    context = {"categories_list": categories_list, "items_list": items_list}
+    categories = ItemCategory.objects.order_by("-name")
+    items = Item.objects.order_by("-category")
+    context = {"categories": categories, "items": items}
 
     return render(request, "storage/index.html", context)
 
 
 def items(request):
-    return HttpResponse("Hello! You're looking at items")
+    items = list(Item.objects.order_by("-pub_date"))
+    if not items:
+        raise Http404("No Item matches the given query.")
+
+    return render(request, "storage/items.html", {"items": items})
 
 
 def item(request, item_id):
-    return HttpResponse(f"Hello! You're looking at item number {item_id}")
+    item = get_object_or_404(Item, pk=item_id)
+
+    return render(request, "storage/item.html", {"item": item})
 
 
 def categories(request):
-    return HttpResponse("Hello! You're looking at categories")
+    categories = list(ItemCategory.objects.order_by("-name"))
+    if not categories:
+        raise Http404("No ItemCategory matches the given query.")
+
+    return render(request, "storage/categories.html", {"categories": categories})
 
 
 def category(request, category_id):
-    return HttpResponse(f"Hello! You're looking at category number {category_id}")
+    category = get_object_or_404(ItemCategory, pk=category_id)
+
+    return render(request, "storage/category.html", {"category": category})
