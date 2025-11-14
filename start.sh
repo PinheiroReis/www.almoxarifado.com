@@ -6,7 +6,7 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 cd $SCRIPT_DIR
 
-echo "--- Executing API entrypoint ---"
+echo "--- Executing API start script ---"
 
 # echo "--- Collecting static files ---"
 # uv run python manage.py collectstatic --noinput
@@ -20,5 +20,5 @@ uv run python manage.py migrate
 # echo "--- Running API with gunicorn ---"
 # uv run gunicorn core.wsgi:application --bind 0.0.0.0:8000
 
-echo "--- Running API with gunicorn ---"
+echo "--- Running API with runserver ---"
 uv run python manage.py runserver
