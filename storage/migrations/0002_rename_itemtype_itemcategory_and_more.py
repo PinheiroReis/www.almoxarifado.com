@@ -4,23 +4,22 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('storage', '0001_initial'),
+        ("storage", "0001_initial"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='ItemType',
-            new_name='ItemCategory',
+            old_name="ItemType",
+            new_name="ItemCategory",
         ),
         migrations.AlterModelOptions(
-            name='itemcategory',
-            options={'verbose_name_plural': 'Item categories'},
+            name="itemcategory",
+            options={"verbose_name_plural": "Item categories"},
         ),
         migrations.RenameField(
-            model_name='item',
-            old_name='type',
-            new_name='category',
+            model_name="item",
+            old_name="type",
+            new_name="category",
         ),
     ]

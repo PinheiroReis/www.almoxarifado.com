@@ -24,4 +24,4 @@ class Item(models.Model):
     pub_date = models.DateTimeField(verbose_name="Data de publicação")
 
     def __str__(self):
-        return f"{self.category.name}-{self.id}"
+        return f"{self.category.name}_ID_{self.id}"
