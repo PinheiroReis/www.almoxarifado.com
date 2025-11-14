@@ -8,6 +8,9 @@ cd $SCRIPT_DIR/..
 
 echo "--- Executing API start script ---"
 
+echo "--- Downloading dependencies ---"
+uv sync
+
 # echo "--- Collecting static files ---"
 # uv run python manage.py collectstatic --noinput
 

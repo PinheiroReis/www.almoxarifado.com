@@ -1,5 +1,5 @@
 from django.shortcuts import HttpResponse
 
 
-def home(request):
-    HttpResponse("Hello, World!")
+def index(request):
+    return HttpResponse("Hello, World! You're on storage index page")
