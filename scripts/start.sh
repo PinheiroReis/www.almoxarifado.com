@@ -4,7 +4,7 @@ set -e
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
-cd $SCRIPT_DIR
+cd $SCRIPT_DIR/..
 
 echo "--- Executing API start script ---"
 
