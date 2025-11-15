@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Items Page</title>
+	</head>
+	<body>
+		{% if items %}
+		<h1>Items</h1>
+		<ul>
+			{% for item in items %}
+			<li><a href="{% url 'items:details' item.id %}">{{ item }}</a></li>
+			{% endfor %}
+		</ul>
+		{% else %}
+		<p>No items are available.</p>
+		{% endif %}
+	</body>
+</html>

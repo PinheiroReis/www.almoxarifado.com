@@ -3,16 +3,13 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Storage Categories Page</title>
+		<title>Category Page</title>
 	</head>
 	<body>
-		{% for category in categories %}
 		<ul>
+			<p>N° de Identificação: {{ category.id}}</p>
 			<p>Nome: {{ category.name }}</p>
-			<a href="{% url 'storage:category' category.id %}"
-				>Mais Informações</a
-			>
+			<p>Descrição: {{ category.description}}</p>
 		</ul>
-		{% endfor %}
 	</body>
 </html>
