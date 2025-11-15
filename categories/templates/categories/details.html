@@ -3,13 +3,22 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Category Page</title>
+		<title>Category Details Page</title>
 	</head>
 	<body>
 		<ul>
-			<p>N° de Identificação: {{ category.id}}</p>
-			<p>Nome: {{ category.name }}</p>
-			<p>Descrição: {{ category.description}}</p>
+			<form
+				action="{% url 'categories:delete' category.id %}"
+				method="post"
+			>
+				{% csrf_token %}
+				<fieldset>
+					<legend><h1>{{ category }}</h1></legend>
+					<p>Nome: {{ category.name }}</p>
+					<p>Descrição: {{ category.description }}</p>
+				</fieldset>
+				<input type="submit" value="Deletar Categoria" />
+			</form>
 		</ul>
 	</body>
 </html>

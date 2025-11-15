@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from .models import ItemCategory
 
 
@@ -12,8 +13,8 @@ def index(request):
     return render(request, "categories/index.html", {"categories": categories})
 
 
-def details(request, category_id):
-    category = get_object_or_404(ItemCategory, pk=category_id)
+def details(request, pk):
+    category = get_object_or_404(ItemCategory, pk=pk)
 
     return render(request, "categories/details.html", {"category": category})
 
@@ -21,4 +22,4 @@ def details(request, category_id):
 def delete(request, pk):
     obj = get_object_or_404(ItemCategory, pk=pk)
     obj.delete()
-    return HttpResponseRedirect("categories:index", args=(pk))
+    return HttpResponseRedirect(reverse("categories:index"))

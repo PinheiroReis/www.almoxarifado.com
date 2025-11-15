@@ -12,8 +12,8 @@ def index(request):
     return render(request, "items/index.html", {"items": items})
 
 
-def details(request, item_id):
-    item = get_object_or_404(Item, pk=item_id)
+def details(request, pk):
+    item = get_object_or_404(Item, pk=pk)
 
     return render(request, "items/details.html", {"item": item})
 

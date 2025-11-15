@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Item Detail Page</title>
+		<title>Item Details Page</title>
 	</head>
 	<body>
 		<ul>
@@ -14,9 +14,6 @@
 					<p>Categoria: {{ item.category }}</p>
 					<p>Descrição: {{ item.description }}</p>
 					<p>Data de Publicação: {{ item.pub_date }}</p>
-					{% if error_message %}
-					<p><strong>{{ error_message }}</strong></p>
-					{% endif %}
 				</fieldset>
 				<input type="submit" value="Delete Item" />
 			</form>
