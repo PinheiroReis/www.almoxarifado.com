@@ -15,7 +15,7 @@ def index(request):
 def details(request, item_id):
     item = get_object_or_404(Item, pk=item_id)
 
-    return render(request, "items/item.html", {"item": item})
+    return render(request, "items/details.html", {"item": item})
 
 
 def delete(request, pk):
