@@ -15,6 +15,7 @@ export default function useLogin() {
             api.post<TokenPair>('/accounts/login/', data),
         onSuccess: (response, variables) => {
             saveTokens(response.data)
+            // Note: In production, add { secure: true, sameSite: 'strict' } for HTTPS
             Cookies.set('username', variables.username, { expires: 7 })
 
             navigate('/')
