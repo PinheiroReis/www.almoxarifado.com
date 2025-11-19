@@ -34,7 +34,6 @@ export default function Products() {
     const queryClient = useQueryClient()
     const [searchTerm, setSearchTerm] = useState('')
     const [openDialog, setOpenDialog] = useState(false)
-    const [editingProduct, setEditingProduct] = useState<ItemProps | null>(null)
     const [formErrors, setFormErrors] = useState<Record<string, string>>({})
 
     const { data: products, isLoading, error } = useQuery<ItemProps[]>({
@@ -52,18 +51,6 @@ export default function Products() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['products'] })
             setOpenDialog(false)
-            setEditingProduct(null)
-        },
-    })
-
-    const updateMutation = useMutation({
-        mutationFn: async ({ id, data }: { id: number; data: Partial<ItemProps> }) => {
-            return await api.put(`/items/items/${id}/`, data)
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['products'] })
-            setOpenDialog(false)
-            setEditingProduct(null)
         },
     })
 
@@ -85,16 +72,20 @@ export default function Products() {
         )
     })
 
-    const handleOpenDialog = (product?: ItemProps) => {
-        setEditingProduct(product || null)
+    const handleOpenDialog = () => {
         setFormErrors({})
         setOpenDialog(true)
     }
 
     const handleCloseDialog = () => {
         setOpenDialog(false)
-        setEditingProduct(null)
         setFormErrors({})
+    }
+
+    const handleEditInAdmin = (productId: number) => {
+        // Open Django admin page for editing the product
+        const adminUrl = `${import.meta.env.VITE_API_URL}/admin/items/item/${productId}/change/`
+        window.open(adminUrl, '_blank')
     }
 
     const validateForm = (data: FormData): boolean => {
@@ -141,11 +132,7 @@ export default function Products() {
             status: 'AVAILABLE',
         }
 
-        if (editingProduct) {
-            updateMutation.mutate({ id: editingProduct.id, data: productData })
-        } else {
-            createMutation.mutate(productData)
-        }
+        createMutation.mutate(productData)
     }
 
     const handleDelete = (id: number, name: string) => {
@@ -247,7 +234,8 @@ export default function Products() {
                                             <TableCell align="center">
                                                 <IconButton
                                                     color="primary"
-                                                    onClick={() => handleOpenDialog(product)}
+                                                    onClick={() => handleEditInAdmin(product.id)}
+                                                    title="Editar no Django Admin"
                                                 >
                                                     <EditIcon />
                                                 </IconButton>
@@ -277,7 +265,7 @@ export default function Products() {
 
             <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
                 <DialogTitle>
-                    {editingProduct ? 'Editar Produto' : 'Novo Produto'}
+                    Novo Produto
                 </DialogTitle>
                 <form onSubmit={handleSubmit}>
                     <DialogContent>
@@ -288,7 +276,6 @@ export default function Products() {
                                 label="Nome"
                                 required
                                 fullWidth
-                                defaultValue={editingProduct?.name || ''}
                                 error={!!formErrors.name}
                                 helperText={formErrors.name}
                             />
@@ -298,7 +285,6 @@ export default function Products() {
                                     label="Código"
                                     required
                                     fullWidth
-                                    defaultValue={editingProduct?.code || ''}
                                     error={!!formErrors.code}
                                     helperText={formErrors.code}
                                 />
@@ -307,7 +293,6 @@ export default function Products() {
                                     label="Fabricante"
                                     required
                                     fullWidth
-                                    defaultValue={editingProduct?.manufacturer || ''}
                                     error={!!formErrors.manufacturer}
                                     helperText={formErrors.manufacturer}
                                 />
@@ -320,7 +305,6 @@ export default function Products() {
                                     required
                                     fullWidth
                                     inputProps={{ step: '0.01' }}
-                                    defaultValue={editingProduct?.price || ''}
                                     error={!!formErrors.price}
                                     helperText={formErrors.price}
                                 />
@@ -330,7 +314,6 @@ export default function Products() {
                                     type="number"
                                     required
                                     fullWidth
-                                    defaultValue={editingProduct?.quantity || 0}
                                     error={!!formErrors.quantity}
                                     helperText={formErrors.quantity}
                                 />
@@ -340,7 +323,6 @@ export default function Products() {
                                     type="number"
                                     required
                                     fullWidth
-                                    defaultValue={editingProduct?.minimum_stock || 5}
                                     error={!!formErrors.minimum_stock}
                                     helperText={formErrors.minimum_stock}
                                 />
@@ -351,7 +333,6 @@ export default function Products() {
                                 multiline
                                 rows={2}
                                 fullWidth
-                                defaultValue={editingProduct?.description || ''}
                             />
 
                             <Typography variant="h6" sx={{ mt: 2 }}>Especificações Técnicas</Typography>
@@ -360,19 +341,16 @@ export default function Products() {
                                     name="processor"
                                     label="Processador"
                                     fullWidth
-                                    defaultValue={editingProduct?.processor || ''}
                                 />
                                 <TextField
                                     name="ram"
                                     label="Memória RAM"
                                     fullWidth
-                                    defaultValue={editingProduct?.ram || ''}
                                 />
                                 <TextField
                                     name="storage"
                                     label="Armazenamento"
                                     fullWidth
-                                    defaultValue={editingProduct?.storage || ''}
                                 />
                             </Box>
                             <Box sx={{ display: 'flex', gap: 2 }}>
@@ -380,19 +358,16 @@ export default function Products() {
                                     name="screen_size"
                                     label="Tamanho da Tela"
                                     fullWidth
-                                    defaultValue={editingProduct?.screen_size || ''}
                                 />
                                 <TextField
                                     name="camera_resolution"
                                     label="Câmera"
                                     fullWidth
-                                    defaultValue={editingProduct?.camera_resolution || ''}
                                 />
                                 <TextField
                                     name="operating_system"
                                     label="Sistema Operacional"
                                     fullWidth
-                                    defaultValue={editingProduct?.operating_system || ''}
                                 />
                             </Box>
                             <Box sx={{ display: 'flex', gap: 2 }}>
@@ -400,19 +375,16 @@ export default function Products() {
                                     name="color"
                                     label="Cor"
                                     fullWidth
-                                    defaultValue={editingProduct?.color || ''}
                                 />
                                 <TextField
                                     name="voltage"
                                     label="Voltagem"
                                     fullWidth
-                                    defaultValue={editingProduct?.voltage || ''}
                                 />
                                 <TextField
                                     name="weight"
                                     label="Peso"
                                     fullWidth
-                                    defaultValue={editingProduct?.weight || ''}
                                 />
                             </Box>
 
@@ -421,13 +393,11 @@ export default function Products() {
                                 name="connectivity"
                                 label="Conectividade (Wi-Fi, Bluetooth, etc.)"
                                 fullWidth
-                                defaultValue={editingProduct?.connectivity || ''}
                             />
                             <TextField
                                 name="ports"
                                 label="Portas (USB, HDMI, etc.)"
                                 fullWidth
-                                defaultValue={editingProduct?.ports || ''}
                             />
                         </Box>
                     </DialogContent>
@@ -436,9 +406,9 @@ export default function Products() {
                         <Button
                             type="submit"
                             variant="contained"
-                            disabled={createMutation.isPending || updateMutation.isPending}
+                            disabled={createMutation.isPending}
                         >
-                            {createMutation.isPending || updateMutation.isPending ? (
+                            {createMutation.isPending ? (
                                 <CircularProgress size={24} />
                             ) : (
                                 'Salvar'
