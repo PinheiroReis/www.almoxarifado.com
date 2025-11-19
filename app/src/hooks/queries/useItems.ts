@@ -6,7 +6,7 @@ export default function useItems() {
     return useQuery({
         queryKey: ['items'],
         queryFn: async () => {
-            const response = await api.get<ItemProps[]>('/items/items/')
+            const response = await api.get<ItemProps[]>('/items/')
             return response.data
         },
     })
