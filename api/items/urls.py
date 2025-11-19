@@ -4,7 +4,8 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r"", views.ItemViewSet)
+router.register(r"items", views.ItemViewSet, basename='item')
+router.register(r"movements", views.StockMovementViewSet, basename='stockmovement')
 
 urlpatterns = [
     path("", include(router.urls)),

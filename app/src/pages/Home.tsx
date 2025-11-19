@@ -1,99 +1,108 @@
-import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-import Link from "@mui/material/Link";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-
-import useItems from "@/hooks/queries/useItems";
+import { useNavigate } from 'react-router'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import Typography from '@mui/material/Typography'
+import AppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import IconButton from '@mui/material/IconButton'
+import LogoutIcon from '@mui/icons-material/Logout'
+import InventoryIcon from '@mui/icons-material/Inventory'
+import MoveToInboxIcon from '@mui/icons-material/MoveToInbox'
+import Cookies from 'js-cookie'
+import { deleteTokens } from '@/utils/auth'
 
 export default function Home() {
-	const { data: items, isLoading, error } = useItems();
+    const navigate = useNavigate()
+    const username = Cookies.get('username') || 'Usuário'
 
-	return (
-		<Box
-			sx={{
-				height: "100vh",
-				width: "100%",
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
-				bgcolor: "grey.100",
-				my: 4,
-				mx: 4,
-				p: 4,
-			}}
-		>
-			<Paper
-				elevation={4}
-				sx={{
-					width: "100%",
-					maxWidth: 600,
-					p: 4,
-					borderRadius: 3,
-				}}
-			>
-				<Typography variant="h4" sx={{ mb: 3 }}>
-					Lista de Items
-				</Typography>
+    const handleLogout = () => {
+        deleteTokens()
+        Cookies.remove('username')
+        navigate('/login')
+    }
 
-				{isLoading && (
-					<Box
-						sx={{
-							display: "flex",
-							justifyContent: "center",
-							mt: 4,
-						}}
-					>
-						<CircularProgress />
-					</Box>
-				)}
+    const handleNavigateToProducts = () => {
+        navigate('/products')
+    }
 
-				{error && (
-					<Typography color="error">
-						Ocorreu um erro ao carregar os itens.
-					</Typography>
-				)}
+    const handleNavigateToStock = () => {
+        navigate('/stock')
+    }
 
-				{!isLoading && items && items.length === 0 && (
-					<Typography
-						variant="subtitle1"
-						sx={{ mt: 3, textAlign: "center" }}
-					>
-						Não há items no momento.
-					</Typography>
-				)}
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        Sistema de Controle de Estoque
+                    </Typography>
+                    <Typography variant="body1" sx={{ mr: 2 }}>
+                        {username}
+                    </Typography>
+                    <IconButton
+                        color="inherit"
+                        onClick={handleLogout}
+                        aria-label="logout"
+                    >
+                        <LogoutIcon />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
 
-				{items && items.length > 0 && (
-					<List>
-						{items.map((item) => (
-							<Link
-								href={item.url}
-								key={item.id}
-								target="_blank"
-								rel="noopener"
-								sx={{ textDecoration: "none" }}
-							>
-								<ListItem
-									sx={{
-										bgcolor: "grey.50",
-										mb: 1,
-										borderRadius: 2,
-										boxShadow: 1,
-									}}
-								>
-									<ListItemText
-										primary={item.description}
-										secondary={`ID: ${item.id} | CAT: ${item.categories} | Status: ${item.status}`}
-									/>
-								</ListItem>
-							</Link>
-						))}
-					</List>
-				)}
-			</Paper>
-		</Box>
-	);
+            <Box
+                sx={{
+                    height: 'calc(100vh - 64px)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    bgcolor: 'grey.100',
+                    p: 4,
+                }}
+            >
+                <Paper
+                    elevation={4}
+                    sx={{
+                        width: '100%',
+                        maxWidth: 600,
+                        p: 4,
+                        borderRadius: 3,
+                    }}
+                >
+                    <Typography variant="h4" sx={{ mb: 3, textAlign: 'center' }}>
+                        Painel Principal
+                    </Typography>
+                    
+                    <Typography variant="body1" sx={{ mb: 4, textAlign: 'center', color: 'text.secondary' }}>
+                        Sistema de gestão de equipamentos eletrônicos
+                    </Typography>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            fullWidth
+                            startIcon={<InventoryIcon />}
+                            onClick={handleNavigateToProducts}
+                            sx={{ py: 2 }}
+                        >
+                            Cadastro de Produtos
+                        </Button>
+                        
+                        <Button
+                            variant="contained"
+                            size="large"
+                            fullWidth
+                            startIcon={<MoveToInboxIcon />}
+                            onClick={handleNavigateToStock}
+                            sx={{ py: 2 }}
+                            color="secondary"
+                        >
+                            Gestão de Estoque
+                        </Button>
+                    </Box>
+                </Paper>
+            </Box>
+        </Box>
+    )
 }
