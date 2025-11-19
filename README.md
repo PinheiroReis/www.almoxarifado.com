@@ -1,6 +1,6 @@
 # www.almoxarifado.com
 
-Este é um projeto básico para gestão de diferentes items em estoque. Ele entende os items como modelos do Django, que é responsável por dizer quantas unidades estão disponíveis de cada coisa, além de fornecer o painel de administração built-in dele, por onde os dados são inseridos. No frontend, os dados são apenas exibidos, além de haver links para acessar/editar/criar objetos por meio do painel Django (não do `restframework`, mas do próprio Django).
+Este é um projeto básico para gestão de diferentes items em estoque. Ele entende os items como modelos do Django, que é responsável por dizer quantas unidades estão disponíveis de cada coisa, além de fornecer o painel de administração built-in dele, por onde os dados são inseridos. No frontend, os dados são apenas exibidos, além de haver links para acessar/editar/criar objetos por meio do painel Django (não do `restframework`, mas do próprio Django). Tudo é feito visando que o site pode ser executado por uma máquina com Windows ou Linux.
 
 O design é simples, intuitivo e belo, com algumas cores para dar contraste e evitar uma interface monótona.
 
