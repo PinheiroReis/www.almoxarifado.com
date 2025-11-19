@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import type { AxiosResponse } from 'axios'
 import { useNavigate } from 'react-router'
+import Cookies from 'js-cookie'
 import type Credentials from '@/types/credentials'
 import type TokenPair from '@/types/tokenPair'
 import api from '@/utils/api'
@@ -12,8 +13,9 @@ export default function useLogin() {
     return useMutation<AxiosResponse<TokenPair>, unknown, Credentials>({
         mutationFn: (data: Credentials) =>
             api.post<TokenPair>('/accounts/login/', data),
-        onSuccess: (response) => {
+        onSuccess: (response, variables) => {
             saveTokens(response.data)
+            Cookies.set('username', variables.username, { expires: 7 })
 
             navigate('/')
 
